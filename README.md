@@ -1,4 +1,4 @@
-# VoidWarehouse Search（虚空仓库搜索框）
+# Neko VoidWarehouse Search（虚空仓库搜索框）
 
 纯客户端 Fabric mod：在「虚空仓库」的界面（一个 6 行原版大箱子）上叠加一个搜索框，支持**中文 / 拼音全拼 / 拼音首字母 / 注册名**搜索筛选物品。服务端 GUI 一个字节不变，纯原版玩家零感知。
 

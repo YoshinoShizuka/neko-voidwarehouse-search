@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "neko_voidwarehouse_search",
   "version": "${version}",
-  "name": "VoidWarehouse Search",
+  "name": "Neko VoidWarehouse Search",
   "description": "虚空仓库搜索框：在服务端虚空仓库界面上叠加一个搜索框，支持中文 / 拼音 / 注册名搜索筛选物品。纯客户端模组，服务端需搭配 carpet-Neko-Addition 1.0.16+。",
   "authors": [
     "Akirono"
