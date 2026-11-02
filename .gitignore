@@ -12,3 +12,6 @@ run/
 
 # 日志
 *.log
+
+# 本地收集的发布产物（Release 走 CI artifacts，不提交）
+dist/
