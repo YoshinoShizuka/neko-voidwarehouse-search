@@ -2,6 +2,7 @@ package neko.voidwarehouse.search.mixin;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.components.events.ContainerEventHandler;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
@@ -133,7 +134,7 @@ public abstract class MixinAbstractContainerScreen<T extends net.minecraft.world
             return;
         }
         if (keyEvent.key() == KEY_ESCAPE) {
-            box.setFocused(false);
+            this.voidwarehouseSearch$setSearchFocused(false);
             cir.setReturnValue(true);
             return;
         }
@@ -141,6 +142,18 @@ public abstract class MixinAbstractContainerScreen<T extends net.minecraft.world
         // checkHotbarKeyPressed（数字键 = 把快捷栏整组存进仓库）
         box.keyPressed(keyEvent);
         cir.setReturnValue(true);
+    }
+
+    @Unique
+    private void voidwarehouseSearch$setSearchFocused(boolean focused) {
+        EditBox box = this.voidwarehouseSearch$searchBox;
+        if (box == null) {
+            return;
+        }
+        ((ContainerEventHandler) (Object) this).setFocused(focused ? box : null);
+        if (box.isFocused() != focused) {
+            box.setFocused(focused);
+        }
     }
 
     // ------------------------------------------------------------------ 鼠标
@@ -160,11 +173,14 @@ public abstract class MixinAbstractContainerScreen<T extends net.minecraft.world
         boolean inside = event.x() >= box.getX() && event.x() < box.getX() + box.getWidth()
                 && event.y() >= box.getY() && event.y() < box.getY() + box.getHeight();
         if (inside && box.isVisible()) {
+            // 原版路由已经点过 setFocused(box)；这里再对齐一次（幂等），
+            // 顺带自愈「容器 focused 字段 == box 但 widget 标志已 false」的脏状态
+            this.voidwarehouseSearch$setSearchFocused(true);
             SearchClientState.onSearchBoxClicked();
         } else if (box.isFocused()) {
             // 点框外：无论刚才那次点击是否被原版消费（点了槽位、点了框外空白），
             // 都退出搜索 —— 否则用户以为在点界面，键盘其实还在往框里打字
-            box.setFocused(false);
+            this.voidwarehouseSearch$setSearchFocused(false);
         }
     }
 
